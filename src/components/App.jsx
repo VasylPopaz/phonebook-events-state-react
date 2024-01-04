@@ -1,16 +1,58 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import React, { Component } from 'react';
+import { Contacts, Filter, Section, Phonebook } from 'components';
+
+export class App extends Component {
+  state = {
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '432-23-34' },
+      { id: 'id-2', name: 'Hermione Kline', number: '435-75-76' },
+      { id: 'id-3', name: 'Eden Clements', number: '866-11-64' },
+      { id: 'id-4', name: 'Annie Copeland', number: '342-87-35' },
+    ],
+    filter: '',
+  };
+
+  formSubmitHandler = data => {
+    const { contacts } = this.state;
+
+    !contacts.find(elem => elem.name === data.name)
+      ? this.setState({ contacts: [...contacts, data] })
+      : alert(`${data.name} is already in contacts!`);
+  };
+
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(elem =>
+      elem.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  deleteContact = id => {
+    const updatedContacts = this.state.contacts.filter(elem => id !== elem.id);
+    this.setState({
+      contacts: [...updatedContacts],
+    });
+  };
+
+  render() {
+    const filteredContacts = this.getFilteredContacts();
+
+    return (
+      <div>
+        <Section title="Phonebook">
+          <Phonebook onSubmit={this.formSubmitHandler} />
+        </Section>
+
+        <Section title="Contacts">
+          <Filter onChange={this.changeFilter} />
+          <Contacts contacts={filteredContacts} onClick={this.deleteContact} />
+        </Section>
+      </div>
+    );
+  }
+}
