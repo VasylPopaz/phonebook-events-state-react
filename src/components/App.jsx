@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Contacts, Filter, Section, Phonebook } from 'components';
+import { SectionContainer } from './Section/Section.styled';
 
 export class App extends Component {
   state = {
@@ -44,14 +45,19 @@ export class App extends Component {
 
     return (
       <div>
-        <Section title="Phonebook">
-          <Phonebook onSubmit={this.formSubmitHandler} />
-        </Section>
 
-        <Section title="Contacts">
-          <Filter onChange={this.changeFilter} />
-          <Contacts contacts={filteredContacts} onClick={this.deleteContact} />
-        </Section>
+        <SectionContainer>
+          <Section title="Phonebook">
+            <Phonebook onSubmit={this.formSubmitHandler} />
+          </Section>
+        </SectionContainer>
+
+       <SectionContainer>
+          <Section title="Contacts">
+            <Filter onChange={this.changeFilter} />
+            <Contacts contacts={filteredContacts} onClick={this.deleteContact} />
+          </Section>
+       </SectionContainer>
       </div>
     );
   }

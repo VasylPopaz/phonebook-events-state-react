@@ -1,19 +1,23 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
+import { Button } from 'components/Button.styled';
+import { ContactsDescr, ContactsItem, ContactsList } from './Contacts.styled';
 
 export const Contacts = ({ contacts, onClick }) => {
   return (
-    <ul>
+    <ContactsList>
       {contacts.map((elem, index) => {
         return (
-          <li key={nanoid()}>
-            {elem.name}: {elem.number}
-            <button type="button" onClick={() => onClick(elem.id)}>
+          <ContactsItem key={nanoid()}>
+            <ContactsDescr>
+              {elem.name}: {elem.number}
+            </ContactsDescr>
+            <Button type="button" onClick={() => onClick(elem.id)}>
               Delete
-            </button>
-          </li>
+            </Button>
+          </ContactsItem>
         );
       })}
-    </ul>
+    </ContactsList>
   );
 };
