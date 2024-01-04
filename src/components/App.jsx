@@ -16,8 +16,10 @@ export class App extends Component {
   formSubmitHandler = data => {
     const { contacts } = this.state;
 
-    !contacts.find(elem => elem.name === data.name)
-      ? this.setState({ contacts: [...contacts, data] })
+    !contacts.find(elem => elem.name.toLowerCase() === data.name.toLowerCase())
+      ? this.setState(prevState => ({
+          contacts: [...prevState.contacts, data],
+        }))
       : alert(`${data.name} is already in contacts!`);
   };
 
@@ -34,10 +36,9 @@ export class App extends Component {
   };
 
   deleteContact = id => {
-    const updatedContacts = this.state.contacts.filter(elem => id !== elem.id);
-    this.setState({
-      contacts: [...updatedContacts],
-    });
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(elem => id !== elem.id),
+    }));
   };
 
   render() {
@@ -45,19 +46,21 @@ export class App extends Component {
 
     return (
       <div>
-
         <SectionContainer>
           <Section title="Phonebook">
             <Phonebook onSubmit={this.formSubmitHandler} />
           </Section>
         </SectionContainer>
 
-       <SectionContainer>
+        <SectionContainer>
           <Section title="Contacts">
             <Filter onChange={this.changeFilter} />
-            <Contacts contacts={filteredContacts} onClick={this.deleteContact} />
+            <Contacts
+              contacts={filteredContacts}
+              onClick={this.deleteContact}
+            />
           </Section>
-       </SectionContainer>
+        </SectionContainer>
       </div>
     );
   }
